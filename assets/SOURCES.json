@@ -1,0 +1,20 @@
+{
+  "painting": {
+    "file": "qingming_scroll.jpg",
+    "title": "清院本清明上河圖",
+    "date": 1736,
+    "collection": "國立故宮博物院",
+    "source": "https://commons.wikimedia.org/wiki/File:QingMingShangHeTu_Big.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/e/e9/QingMingShangHeTu_Big.jpg",
+    "dimensions": [
+      30000,
+      926
+    ],
+    "rights_as_stated_by_source": "Public domain / PD-Art",
+    "museum_reference": "https://digitalarchive.npm.gov.tw/Collection/Detail/3782?dep=P"
+  },
+  "animations": {
+    "included": false,
+    "note": "Public edition uses original painting details and locally authored effects. Museum animation clips are not redistributed."
+  }
+}
