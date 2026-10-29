@@ -1,0 +1,9 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import {createJourney,discover,continueJourney} from '../journey-state.mjs';
+const context={window:{}};vm.runInNewContext(readFileSync(new URL('../chapters.js',import.meta.url),'utf8'),context);const chapters=context.window.PORTAL_CHAPTERS;
+test('five inspected regions each contain two distinct clues inside the original scroll',()=>{assert.equal(chapters.length,5);const ids=new Set();for(const c of chapters){assert.equal(c.targets.length,2);assert.ok(c.x>=0&&c.x+1646<=30000);for(const t of c.targets){assert.ok(t.x>0&&t.x<1&&t.y>0&&t.y<1);assert.ok(t.learn&&t.question&&t.hint);assert.ok(!ids.has(t.id));ids.add(t.id);}}assert.equal(ids.size,10);});
+test('one clue cannot skip a chapter, and a found clue cannot count twice',()=>{const s=createJourney(chapters);assert.equal(discover(s,chapters,-1),false);assert.equal(discover(s,chapters,0),true);assert.equal(discover(s,chapters,1),false);assert.equal(continueJourney(s,chapters),'search');assert.equal(s.chapter,0);assert.equal(discover(s,chapters,0),false);assert.deepEqual(s.found[0],[0]);});
+test('both clues are required for each move and all ten for completion',()=>{const s=createJourney(chapters);for(let chapter=0;chapter<5;chapter++){assert.equal(s.chapter,chapter);for(const i of [1,0]){assert.equal(discover(s,chapters,i),true);const result=continueJourney(s,chapters);if(i!==0){assert.equal(result,'search');assert.equal(s.chapter,chapter);}else if(chapter<4){assert.equal(result,'transition');assert.equal(s.chapter,chapter+1);s.mode='search';}else assert.equal(result,'complete');}}assert.equal(s.found.flat().length,10);assert.equal(s.mode,'complete');assert.equal(continueJourney(s,chapters),'unchanged');});
