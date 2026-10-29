@@ -1,0 +1,5 @@
+{
+  "package": "1.2.0",
+  "tarball": "https://registry.npmjs.org/@mediapipe/tasks-vision/-/tasks-vision-1.2.0.tgz",
+  "model": "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
+}
