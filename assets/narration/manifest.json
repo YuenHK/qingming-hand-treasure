@@ -1,0 +1,86 @@
+{
+  "voice": "zh-HK-HiuMaanNeural",
+  "language": "zh-HK",
+  "rate": "-8%",
+  "generator": "edge-tts",
+  "voice_reference": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support",
+  "entries": [
+    {
+      "id": "gate",
+      "text": "搵到城門！城門係出入城市嘅主要通道，城牆就有保護城市嘅作用。畫中人車喺門前往來，入城同出城都會經過呢度。",
+      "file": "gate.mp3",
+      "bytes": 83808,
+      "sha256": "161b33bbdaab41a58bc60e494ca0570c616545cb74d2d32c3726cb566069fd19"
+    },
+    {
+      "id": "sailboat",
+      "text": "搵到河上帆船！帆船可以借風力前進，用嚟載人同運貨。畫中高高嘅桅杆，就係用嚟掛起船帆嘅。",
+      "file": "sailboat.mp3",
+      "bytes": 74016,
+      "sha256": "b61bef9f4c66903f37e4ca9597d4d7fad83706f6aaa37c11fc7684fefdff439e"
+    },
+    {
+      "id": "paifang",
+      "text": "搵到街口牌坊！牌坊係古代常見嘅標誌建築，可以標示街道或地方。畫中佢橫跨路口，醒目嘅外形亦方便行人認路。",
+      "file": "paifang.mp3",
+      "bytes": 85824,
+      "sha256": "842ed23eea4020b9e9a723cbfe88366b66a51beaf453ec45d51322484f44fb89"
+    },
+    {
+      "id": "sedan",
+      "text": "搵到抬轎隊伍！轎係由人抬起嘅交通工具，乘客坐喺有頂蓋嘅轎廂入面。幾位轎夫要配合步伐，先可以抬得穩。",
+      "file": "sedan.mp3",
+      "bytes": 81504,
+      "sha256": "df6497d43776fa22ab2b8b1d2c2077e6d330e198604887bd31db322ea9fd66d8"
+    },
+    {
+      "id": "shop",
+      "text": "搵到紅柱店舖！街邊店舖用嚟做買賣，敞開嘅店面方便客人睇貨。畫中店舖就喺路旁，行人經過就可以停低買嘢。",
+      "file": "shop.mp3",
+      "bytes": 84096,
+      "sha256": "4291bd407372e1ba0e27b204af15d68c417b29cdd558a5631b72177dff437e52"
+    },
+    {
+      "id": "streetHorse",
+      "text": "搵到街上馬匹！古人會騎馬代步，亦會用馬拉車運貨。畫中馬匹、車輛同店舖出現喺同一條街，帶出熱鬧嘅城市生活。",
+      "file": "streetHorse.mp3",
+      "bytes": 83952,
+      "sha256": "cd76129d52383207eafc43668c6062d1446e8fe73c25e2d34af497bae538341e"
+    },
+    {
+      "id": "gardenBridge",
+      "text": "搵到石橋台階！石橋將兩邊嘅道路連接起來，台階方便行人上落。橋邊嘅欄杆可以保護行人，減少跌落水嘅危險。",
+      "file": "gardenBridge.mp3",
+      "bytes": 84096,
+      "sha256": "2518c8b3f09c749b247354b26dde1a704ef9b640271c239d0e38e713f79db279"
+    },
+    {
+      "id": "riverBoat",
+      "text": "搵到靠岸船隻！船靠岸後，乘客就可以上落，貨物亦可以搬到陸地。畫中船隻貼近石岸，呢度就係水路同陸路交接嘅地方。",
+      "file": "riverBoat.mp3",
+      "bytes": 88992,
+      "sha256": "4e521a0ff1db3ceb0619c420587f5bbbbd89122cd87a0057f298c9b64d4f09af"
+    },
+    {
+      "id": "tower",
+      "text": "搵到高高樓閣！樓閣可以登高望遠，亦係園林入面嘅景觀。畫中一層層嘅屋頂同露台，令建築比旁邊嘅樹木更突出。",
+      "file": "tower.mp3",
+      "bytes": 81072,
+      "sha256": "5691ff034d3abc9ac6f7fb2367a8dd9c7f8f0c07f703e0440e4ca2d835120dc9"
+    },
+    {
+      "id": "archway",
+      "text": "搵到圓拱門洞！門洞俾人穿過建築出入，頂部彎彎嘅部分就叫做「拱」。畫中圓拱門洞上面彎、兩邊直，同斜斜嘅屋頂好唔同。",
+      "file": "archway.mp3",
+      "bytes": 91152,
+      "sha256": "c2652309f1df0f3cc25eca8f2b74ee97afe4c794f8dae8f50e9a9a51ddfd9e73"
+    },
+    {
+      "id": "complete",
+      "text": "你由城門外行到長卷深處，認識交通、買賣、河岸同建築。蒙板已經化成光，再由城內回望城外。仲可以全卷漫遊，睇埋沿途未細看嘅地方。",
+      "file": "complete.mp3",
+      "bytes": 101664,
+      "sha256": "473a5d39445131348bb5a7c72f63dcd6656cdae6710d1947e15798523c7027a7"
+    }
+  ]
+}
