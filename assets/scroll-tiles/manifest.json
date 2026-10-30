@@ -1,0 +1,72 @@
+{
+  "width": 30000,
+  "height": 926,
+  "tile_width": 2048,
+  "source_sha256": "07a886d193a8dc56e0a1efe64da1e85694485d0186c3999a2a345b1c543ca433",
+  "files": {
+    "00.jpg": {
+      "bytes": 472437,
+      "sha256": "bfd89545d18c9f4f0ead6d58b3f5eeb76c20a1867421a200661202dbd086cfbd"
+    },
+    "01.jpg": {
+      "bytes": 474185,
+      "sha256": "ce8f041b57365577a3ad511edb1c2b86c653d85dc3935bab1ed32a492f6fd396"
+    },
+    "02.jpg": {
+      "bytes": 503467,
+      "sha256": "00cba88760d57f87427282ccf3cf9fb60af4e031a9a1981434e83226a6dbf78d"
+    },
+    "03.jpg": {
+      "bytes": 624700,
+      "sha256": "046a4eec3a0fb387f9b2c33cedad19efb88489a1c268836a9409694dff787acf"
+    },
+    "04.jpg": {
+      "bytes": 610111,
+      "sha256": "4a52232393892de2d35bcfb1c832451097b7a2a6c3cbd9edc7f1cb421015d874"
+    },
+    "05.jpg": {
+      "bytes": 634230,
+      "sha256": "d1096c762b7ce07de0cfe63648fc10a54385d17660da110859a6aaf3d1a718b8"
+    },
+    "06.jpg": {
+      "bytes": 654123,
+      "sha256": "ef17ca11caa81c8ed73c57cf28dce7768d93895854c7c2b13e02bf48f0882ded"
+    },
+    "07.jpg": {
+      "bytes": 536532,
+      "sha256": "4ecf5938bd56b1708c06f3d24135ffc97ed332e746146eb4a70a6eac5986d9ed"
+    },
+    "08.jpg": {
+      "bytes": 543542,
+      "sha256": "e9cf696464b1414c3b8a200ff9e1043b08c1e8bb4ff81b3f8f440a5e8870dd4f"
+    },
+    "09.jpg": {
+      "bytes": 567371,
+      "sha256": "5662fc364b855df23fb18e32212050fb023b1119decc34d1187049ed337fde83"
+    },
+    "10.jpg": {
+      "bytes": 426608,
+      "sha256": "33a99b95df107beda72be86d25d98ebabfc9335455930eaf917d9d71ced2731d"
+    },
+    "11.jpg": {
+      "bytes": 426656,
+      "sha256": "625017018cf098ef252dcd537a5c597b58aae3918ff948be3d4284a73d8ef112"
+    },
+    "12.jpg": {
+      "bytes": 533156,
+      "sha256": "5488a569c755be8812238dd05d63c316b189ea2c146c3349564344556df67df2"
+    },
+    "13.jpg": {
+      "bytes": 431619,
+      "sha256": "a3cd416ff0d3a13c1987b89aaab0740893f38f09d9d79409dc4626f3008f2357"
+    },
+    "14.jpg": {
+      "bytes": 309859,
+      "sha256": "ee32b8a0b58e7afe4dcfa64f9c6c743984ccf34695223375b75240012c2aec54"
+    },
+    "preview.jpg": {
+      "bytes": 139598,
+      "sha256": "81b76bcbdddd8d2c15521516dea4af35e6a7d6dfb0b3847f7a5e3a34896ec651"
+    }
+  }
+}

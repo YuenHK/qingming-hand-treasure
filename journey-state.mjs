@@ -9,4 +9,4 @@ export function continueJourney(state,chapters){
   if(state.chapter===chapters.length-1){state.mode='complete';return 'complete';}
   state.chapter++;state.mode='transition';return 'transition';
 }
-export const COMPLETION_TEXT='你由城門外行到長卷深處，認識交通、買賣、河岸同建築。古城已經亮起真色，亦陪你慢慢回望咗畫中生活。準備好再出發，就按「再玩一次」，重新開始尋寶啦！';
+export const COMPLETION_TEXT='你已經搵齊十個線索，認識古人嘅交通、買賣同建築。一齊再出發，按「再玩一次」返回玩法說明，開始新一輪尋寶啦！';

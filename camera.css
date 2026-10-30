@@ -62,7 +62,7 @@ header{gap:14px;align-items:center}
 #welcome{padding:20px;overflow:auto;background:#07110ee8}
 .welcomeCard{width:min(960px,100%);max-height:calc(100dvh - 40px);overflow:auto;padding:26px 32px;text-align:left;border-radius:8px;background:linear-gradient(130deg,#293b2c,#14231b)}
 .welcomeBrand{display:flex;align-items:center;gap:14px}.welcomeBrand img{transform:rotate(-3deg);flex-shrink:0}.welcomeBrand h2{font-family:"DFKai-SB","KaiTi",serif;font-size:32px;line-height:1.3;letter-spacing:3px;margin:3px 0 0}.welcomeEdition{margin-left:auto;color:#c5c79d;font-size:12px}
-.welcomeArtwork{height:120px;margin:22px 0;background:linear-gradient(0deg,#0a150dbb,transparent 65%),url('assets/qingming_scroll.jpg') 52% 50%/auto 100%;position:relative;border-block:1px solid #9e8d60;overflow:hidden}.welcomeArtwork span{position:absolute;left:16px;bottom:12px;font:18px serif;color:#fff0cc;letter-spacing:2px;text-shadow:0 2px 6px #000}
+.welcomeArtwork{height:120px;margin:22px 0;background:linear-gradient(0deg,#0a150dbb,transparent 65%),url('assets/scroll-tiles/preview.jpg') 52% 50%/auto 100%;position:relative;border-block:1px solid #9e8d60;overflow:hidden}.welcomeArtwork span{position:absolute;left:16px;bottom:12px;font:18px serif;color:#fff0cc;letter-spacing:2px;text-shadow:0 2px 6px #000}
 .welcomeColumns{display:grid;grid-template-columns:1.1fr 1fr;gap:32px}.welcomeColumns h3{font:22px serif;color:#f1dcaa;margin:0 0 12px;letter-spacing:1px}.paintingIntro p{font-size:16px;line-height:1.8;color:#e0e1cd;margin:0 0 12px}.paintingIntro strong{color:#f0d597}.paintingIntro a{color:#cfbc89;font-size:12px;text-underline-offset:4px}
 .welcomePlay{border-left:1px solid #72805a;padding-left:28px}.welcomeCard .welcomePlay ol{display:grid;gap:12px;margin:0;padding:0;counter-reset:steps}.welcomeCard .welcomePlay li{display:block;border:0;padding:0 0 0 29px;position:relative;counter-increment:steps}.welcomePlay li:before{content:counter(steps,decimal-leading-zero);position:absolute;left:0;top:1px;color:#c5b783;font:14px serif}.welcomeCard .welcomePlay b{font-size:17px}.welcomeCard .welcomePlay li span{font-size:13px;line-height:1.5;margin-top:4px;color:#c4ceb5}.hybridTip{font-size:13px;line-height:1.7;color:#dfd2a5;border-top:1px solid #65714d;margin:18px 0 0;padding-top:12px}
 .welcomeActions{justify-content:stretch;gap:12px;margin:24px 0 12px}.welcomeActions button{flex:1;font-size:16px;padding:13px 14px}#welcomeCamera{background:#d7c28d}.welcomeCard>.welcomePrivacy{font-size:11px;line-height:1.7;color:#aebc9f;text-align:center;margin:0}
@@ -90,3 +90,23 @@ header{gap:14px;align-items:center}
 @container(max-width:620px){.welcomeColumns{grid-template-columns:1fr;gap:12px}.welcomePlay{border:0;padding:0}.welcomeArtwork{display:none}.welcomeBrand h2{font-size:25px}.welcomeEdition{display:none}.welcomeColumns h3{font-size:19px}.paintingIntro p{font-size:14px;line-height:1.45;margin-bottom:7px}.welcomeCard .welcomePlay ol{gap:7px}.welcomeCard .welcomePlay b{font-size:15px}.welcomeCard .welcomePlay li span{font-size:13px}.hybridTip{margin-top:8px;padding-top:6px}}
 @media(max-height:650px){.welcomeCard{gap:9px;padding:14px 20px}.welcomeArtwork{height:42px}.welcomeArtwork span{font-size:15px;bottom:6px}.welcomeBrand img{width:40px;height:40px}.welcomeBrand h2{font-size:26px}.welcomeColumns h3{font-size:19px}.paintingIntro p{font-size:15px;line-height:1.45;margin-bottom:8px}.welcomeCard .welcomePlay ol{gap:7px}.welcomeCard .welcomePlay b{font-size:16px}.welcomeCard .welcomePlay li span{font-size:13px}.welcomeActions #welcomeCamera{font-size:18px;padding:10px 16px}.welcomeGestureHint,#welcomeHandStatus{font-size:12px}}
 @media(max-height:520px){.welcomeArtwork{display:none}.welcomeCard{gap:7px;padding:12px 18px}.welcomeBrand img{width:36px;height:36px}}
+
+/* A small preview texture provides a calm, translucent moving backdrop. */
+#welcome{background:#07110ed9;backdrop-filter:none}
+#welcomeBackdrop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.36;pointer-events:none}
+.welcomeCard{z-index:1;background:linear-gradient(130deg,#293b2ce8,#14231bf0)}
+.welcomeArtwork{background-image:linear-gradient(0deg,#0a150dbb,transparent 65%),url('assets/scroll-tiles/preview.jpg')}
+#handCursor{left:0;top:0;will-change:transform}
+#notice[data-phase="complete"]{max-height:none;overflow:visible;transform:translate(-50%,-50%) scale(var(--notice-scale,1))}
+#notice[data-phase="complete"] #continue{font-size:20px;min-height:56px}
+#completionGesture{font-size:14px;line-height:1.5;color:#e4d39d;margin:8px 0 12px}
+#aiDock{gap:10px}#aiLive{flex:1;min-height:0;gap:10px}
+.reality,.commandCard{flex:0 0 auto}
+#cameraPreview{height:clamp(100px,26vh,240px);max-height:none;aspect-ratio:auto}
+.positionCard{display:flex;flex-direction:column;flex:1;min-height:160px}
+.positionCard .analysisView{flex:1;min-height:96px;max-height:none;aspect-ratio:auto;height:auto}
+.positionCard .analysisView canvas{object-fit:fill;min-height:0}
+.positionCard .cardTitle,.positionRows{flex-shrink:0}.positionRows .positionRow{font-size:11px}.positionRows output{width:32px}
+.dockBottom{margin-top:0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.dockBottom #audioControls{margin:0}.dockBottom p{width:100%;margin:0;font-size:9px}.dockBottom small{margin-left:auto}
+@media(max-height:760px){#aiDock,#aiLive{gap:8px}.liveCard{padding:7px}.aiIntro p,.reality>p{display:none}.commandCard>p{font-size:9px}.positionCard{min-height:145px}}
+@media(max-height:580px){#aiDock,#aiLive{gap:6px}.positionCard{min-height:120px}.positionCard .analysisView{min-height:70px}.commandCard>p,.dockBottom p{display:none}.positionRows .positionRow{font-size:9px}.dockBottom small{font-size:7px}}

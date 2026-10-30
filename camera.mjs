@@ -3,6 +3,7 @@ const $=id=>document.getElementById(id);
 const video=$('cameraVideo'),overlay=$('handOverlay'),ink=overlay.getContext('2d');
 const reality=$('liveCameraCanvas'),liveInk=reality.getContext('2d'),positionCanvas=$('palmMap'),mapInk=positionCanvas.getContext('2d');
 let lastPreview=0,previewFrames=0,trail=[];
+new ResizeObserver(()=>{const r=positionCanvas.getBoundingClientRect();if(!r.width||!r.height)return;const w=Math.round(r.width*2),h=Math.round(r.height*2);if(positionCanvas.width!==w||positionCanvas.height!==h){positionCanvas.width=w;positionCanvas.height=h;trail=[];}}).observe(positionCanvas);
 const connections=[[0,1,2,3,4],[0,5,6,7,8],[5,9,10,11,12],[9,13,14,15,16],[13,17,18,19,20],[0,17]];
 let stream,worker,busy=false,frameId=0,lastFrame=0,lastVideoTime=-1,position=null,lastResult=0,generation=0;
 let mode='mouse',ready=false,mirror=true,reach=.15,starting=false,cancelModel=null,lastMotion=0;

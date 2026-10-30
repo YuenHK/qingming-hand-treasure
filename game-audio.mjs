@@ -58,5 +58,6 @@ export function createGameAudio(){
  document.addEventListener('visibilitychange',()=>{if(document.hidden){stopNarration();context?.suspend();}else if(started){context.resume().then(()=>{nextBeat=context.currentTime+.05;schedule();report();}).catch(()=>report('按聲音按鈕恢復配樂'));}});
  window.addEventListener('pagehide',()=>{clearInterval(timer);voice.pause();context?.close();});
  report('搵到物件，自動廣東話講解');
+ start();
  return {start,narrate,stopNarration,effect,setChapter(value){chapter=value;report();}};
 }

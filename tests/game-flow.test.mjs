@@ -4,9 +4,9 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 
-test('intro accepts an AI hand, ten clues unlock the slower tour, and replay restarts without stopping the camera',async()=>{
- let clock=0,id=0,stopped=false;const frames=new Map(),elements=new Map();
- const context=new Proxy({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(()=>{})});
+test('hand selection works on the last dialog and restart returns to the introduction',async()=>{
+ let clock=0,id=0,stopped=false,grayFilters=0;const frames=new Map(),elements=new Map();
+ const context=new Proxy({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}})},{get:(o,k)=>k in o?o[k]:(()=>{}),set:(o,k,v)=>{if(k==='filter'&&String(v).includes('grayscale'))grayFilters++;o[k]=v;return true;}});
  class Element{
   constructor(id=''){this.id=id;this.hidden=false;this.style={setProperty(){}};this.dataset={};this.attributes={};this.listeners={};this.classList={add(){},remove(){}};this.width=640;this.height=480;this.readyState=2;this.currentTime=0;this.value='';this.children=[];}
   getContext(){return context;}addEventListener(name,fn){(this.listeners[name]??=[]).push(fn);}setAttribute(k,v){this.attributes[k]=v;}getAttribute(k){return this.attributes[k]??null;}removeAttribute(k){delete this.attributes[k];}append(v){this.children.push(v);}replaceChildren(...children){this.children=children;}
@@ -54,12 +54,16 @@ test('intro accepts an AI hand, ten clues unlock the slower tour, and replay res
    get('continue').click();if(target===1&&chapter<4)advance(3.4);
   }
  }
- assert.equal(state().total,10);assert.equal(state().mode,'burn');advance(4.6);
- assert.equal(state().mode,'recap');assert.equal(state().replaySeconds,60);
+ assert.equal(state().total,10);assert.equal(state().mode,'burn');advance(3.05);
+ assert.equal(state().mode,'recap');assert.equal(state().replaySeconds,48);
+ const replayFilterCount=grayFilters;
  document.hidden=true;advance(20);document.hidden=false;
- advance(59);assert.equal(state().mode,'recap','background time must not skip the tour');
- advance(1.2);assert.equal(state().mode,'complete');
+ advance(47.5);assert.equal(state().mode,'recap','background time must not skip the tour');
+ window.portalInput(.02,.98,true,'mouse');advance(.7);assert.equal(state().mode,'complete');
+ assert.equal(grayFilters,replayFilterCount,'the color tour must not rebuild grayscale frames');
  assert.match(get('continue').textContent,/再玩一次/);assert.doesNotMatch(get('noticeText').textContent,/自由|漫遊/);
- get('continue').click();assert.equal(state().mode,'search');assert.equal(state().chapter,0);assert.equal(state().total,0);
- assert.equal(get('welcome').hidden,true);assert.equal(stopped,false,'restart must retain the live camera');
+ advance(1.8,hand(.5,640/720));assert.equal(state().mode,'search');assert.equal(state().chapter,0);assert.equal(state().total,0);
+ assert.equal(get('welcome').hidden,false,'replay starts at the instructions');assert.equal(stopped,false,'restart must retain the live camera');
+ advance(.8,hand(.5,640/720));assert.equal(get('welcome').hidden,false,'holding the same hand must not skip the instructions');
+ advance(.4,hand(.2,.4));advance(1.8,hand(.5,620/720));assert.equal(get('welcome').hidden,true,'new round can start with a deliberate hand movement');
 });
