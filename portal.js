@@ -62,7 +62,19 @@ $('skipReplay').onclick=finish;
 function mouseInput(e){if(!$('welcome').hidden||!$('cameraPanel').hidden)return;const r=$('mainView').getBoundingClientRect();input((e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height,true,'mouse');}
 $('mainView').addEventListener('pointermove',mouseInput);$('mainView').addEventListener('pointerdown',mouseInput);
 $('mainView').addEventListener('pointerleave',()=>input(.5,.5,false,'mouse'));
-$('aboutPainting').onclick=()=>{audio.stopNarration();$('welcome').hidden=false;};
+// Fit the entire introduction rather than clipping its text or scrolling it.
+const introCard=$('welcomeCard');
+function fitWelcome(){
+ if($('welcome').hidden)return;
+ const r=$('welcome').getBoundingClientRect(),w=introCard.offsetWidth,h=introCard.offsetHeight;
+ if(!w||!h||!r.width||!r.height)return;
+ const scale=Math.min(1,Math.max(1,r.width-24)/w,Math.max(1,r.height-24)/h);
+ introCard.style.setProperty('--intro-scale',String(scale));
+ $('welcome').dataset.layout=JSON.stringify({scale,width:w*scale,height:h*scale,availableWidth:r.width-24,availableHeight:r.height-24});
+}
+const introObserver=new ResizeObserver(fitWelcome);introObserver.observe(introCard);introObserver.observe($('welcome'));
+document.fonts?.ready.then(fitWelcome);
+$('aboutPainting').onclick=()=>{audio.stopNarration();$('welcome').hidden=false;fitWelcome();};
 window.addEventListener('keydown',e=>{if(e.target.matches('input,select,textarea'))return;if(e.key.toLowerCase()==='r')reset();});
 function ring(x,y,p,r=32){ctx.save();ctx.strokeStyle='#f2d697';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();ctx.lineWidth=6;ctx.beginPath();ctx.arc(x,y,r+7,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,p));ctx.stroke();ctx.restore();}
 function lens(p){if(!pointer.active||!p.inside)return;const x=p.x*W,y=p.y*H,r=116,fx=scratch.getContext('2d');fx.clearRect(0,0,W,H);fx.drawImage(surface,0,0);fx.globalCompositeOperation='destination-in';const g=fx.createRadialGradient(x,y,r*.6,x,y,r*1.35);g.addColorStop(0,'#fff');g.addColorStop(1,'#fff0');fx.fillStyle=g;fx.fillRect(0,0,W,H);fx.globalCompositeOperation='source-over';ctx.drawImage(scratch,0,0);ctx.strokeStyle='#efd58d77';ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();}
