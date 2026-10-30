@@ -1,0 +1,8 @@
+# Keep the exact bytes used by site-files.json on every operating system.
+* -text
+*.pdf binary
+*.png binary
+*.jpg binary
+*.mp3 binary
+*.wasm binary
+*.task binary
