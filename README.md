@@ -6,15 +6,13 @@
 
 ## 宣傳海報
 
-東華三院馮黃鳳亭中學｜揮手鑑古 · 走進清明上河全圖
+揮手鑑古 · 走進清明上河全圖
 
-![電視海報](assets/posters/tv-preview.png)
+![橫向海報](assets/public-poster/landscape-preview.png)
 
-<a href="assets/posters/rollup.pdf"><img src="assets/posters/rollup-preview.png" alt="80 × 200 cm 易拉架海報" width="240"></a>
+[橫向 PDF](assets/public-poster/landscape.pdf) · [Full HD 圖片](assets/public-poster/landscape-preview.png) · [4K 圖片](assets/public-poster/landscape-4k.png)
 
-[易拉架印刷 PDF（80 × 200 cm，含 3 mm 出血）](assets/posters/rollup.pdf) · [電視 PDF](assets/posters/tv.pdf) · [Full HD 圖片](assets/posters/tv-preview.png) · [4K 圖片](assets/posters/tv-4k.png)
-
-海報由本專案設計，採用原畫市集局部、手部關鍵點及遊戲 QR code。原畫來源見下方；海報內嵌 Noto 字型，授權見 [FONTS-LICENSE.txt](assets/posters/FONTS-LICENSE.txt)。
+只提供此款 16:9 公開版橫向海報，採用原畫市集局部、手部關鍵點及遊戲 QR code。原畫來源見下方；Noto 字型授權見 [FONTS-LICENSE.txt](assets/public-poster/FONTS-LICENSE.txt)。
 
 ## 點樣玩
 
