@@ -1,4 +1,5 @@
-import {createJourney,discover,continueJourney} from './journey-state.mjs';
+import {createJourney,discover,continueJourney,COMPLETION_TEXT} from './journey-state.mjs';
+import {recapFrame,RECAP_SEGMENT_SECONDS} from './recap.mjs';
 import {createGameAudio} from './game-audio.mjs';
 import {createInputRouter} from './input-router.mjs';
 const audio=createGameAudio();
@@ -47,28 +48,22 @@ function showDiscovery(i){
  $('notice').hidden=false;audio.effect('found');audio.narrate(t.id);
 }
 function finish(){
- journey.mode='complete';replayFinished=true;$('skipReplay').hidden=true;$('travelBanner').hidden=true;$('mainView').classList.remove('is-celebrating');$('discoveryKicker').textContent='尋寶清明上河圖 · 主線完成';$('discoveryCount').textContent=totalClues+' / '+totalClues;$('noticeTitle').textContent='十個線索，穿越一卷古城';$('noticeText').textContent='你由城門外行到長卷深處，認識交通、買賣、河岸同建築。蒙板已經化成光，再由城內回望城外。仲可以全卷漫遊，睇埋沿途未細看嘅地方。';$('continue').textContent='全卷漫遊，自由賞畫';$('rewardMedia').hidden=true;$('notice').hidden=false;audio.narrate('complete');
+ journey.mode='complete';replayFinished=true;$('skipReplay').hidden=true;$('travelBanner').hidden=true;$('mainView').classList.remove('is-celebrating');$('discoveryKicker').textContent='尋寶清明上河圖 · 主線完成';$('discoveryCount').textContent=totalClues+' / '+totalClues;$('noticeTitle').textContent='十個線索，穿越一卷古城';$('noticeText').textContent=COMPLETION_TEXT;$('continue').textContent='再玩一次 · 重新尋寶';$('rewardMedia').hidden=true;$('notice').hidden=false;audio.narrate('complete');
 }
 function next(){
  audio.stopNarration();haltFilm();$('notice').hidden=true;$('rewardMedia').hidden=false;
- if(journey.mode==='complete'){explore();return;}
+ if(journey.mode==='complete'){reset();return;}
  const from=viewX,result=continueJourney(journey,chapters);dwell=0;hover=-1;uiTime=0;uiHover='';searchOrigin=pointerClient();searchArmed=false;
  if(result==='transition'){audio.effect('transition');travel={from,to:chapters[journey.chapter].x,start:performance.now()};$('travelBanner').textContent='沿卷前進 · '+chapters[journey.chapter].name;$('travelBanner').hidden=false;updateCopy();}
  if(result==='complete')beginCelebration();
 }
-function explore(){
- audio.stopNarration();haltFilm();$('notice').hidden=true;$('travelBanner').hidden=true;travel=null;journey.mode='explore';dwell=0;hover=-1;
- $('mainView').classList.add('is-exploring');$('mainView').classList.remove('is-celebrating');$('skipReplay').hidden=true;
- $('help').textContent='全卷漫遊 · 自由欣賞';$('taskTitle').textContent='一幅長卷，慢慢展開';$('taskText').textContent='將光圈移到畫面左邊或右邊，可沿整幅畫移動；亦可拖動下方位置條。';$('treasureList').innerHTML='';$('progress').textContent='';$('back').hidden=false;$('scrollPosition').hidden=false;$('exploreHint').hidden=false;
-}
-function back(){journey.mode='search';viewX=chapters[journey.chapter].x;dwell=0;hover=-1;searchArmed=true;$('mainView').classList.remove('is-exploring');cacheView();updateCopy();if(journey.found.flat().length===totalClues){journey.mode='complete';finish();}}
-$('reset').onclick=reset;$('continue').onclick=next;$('back').onclick=back;$('scrollPosition').oninput=e=>{viewX=Number(e.target.value);cacheView();};
+$('reset').onclick=reset;$('continue').onclick=next;
 $('skipReplay').onclick=finish;
 function mouseInput(e){if(!$('welcome').hidden||!$('cameraPanel').hidden)return;const r=$('mainView').getBoundingClientRect();input((e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height,true,'mouse');}
 $('mainView').addEventListener('pointermove',mouseInput);$('mainView').addEventListener('pointerdown',mouseInput);
 $('mainView').addEventListener('pointerleave',()=>input(.5,.5,false,'mouse'));
 $('aboutPainting').onclick=()=>{audio.stopNarration();$('welcome').hidden=false;};
-window.addEventListener('keydown',e=>{if(e.target.matches('input,select'))return;if(e.key.toLowerCase()==='r')reset();if(e.key==='Escape'&&journey.mode==='explore')back();if(journey.mode==='explore'&&['ArrowLeft','ArrowRight'].includes(e.key)){viewX=Math.max(0,Math.min(SCROLL_W-VIEW,viewX+(e.key==='ArrowLeft'?-600:600)));cacheView();}});
+window.addEventListener('keydown',e=>{if(e.target.matches('input,select,textarea'))return;if(e.key.toLowerCase()==='r')reset();});
 function ring(x,y,p,r=32){ctx.save();ctx.strokeStyle='#f2d697';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();ctx.lineWidth=6;ctx.beginPath();ctx.arc(x,y,r+7,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.min(1,p));ctx.stroke();ctx.restore();}
 function lens(p){if(!pointer.active||!p.inside)return;const x=p.x*W,y=p.y*H,r=116,fx=scratch.getContext('2d');fx.clearRect(0,0,W,H);fx.drawImage(surface,0,0);fx.globalCompositeOperation='destination-in';const g=fx.createRadialGradient(x,y,r*.6,x,y,r*1.35);g.addColorStop(0,'#fff');g.addColorStop(1,'#fff0');fx.fillStyle=g;fx.fillRect(0,0,W,H);fx.globalCompositeOperation='source-over';ctx.drawImage(scratch,0,0);ctx.strokeStyle='#efd58d77';ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();}
 function search(dt,p){
@@ -83,8 +78,9 @@ function search(dt,p){
  else if(performance.now()-lastHint>1200&&journey.mode==='search')$('taskText').textContent='左右揮手展卷 · 停留兩秒尋寶';
 }
 function uiDwell(dt){
- let hit='';const pc=pointerClient();if(pointer.source!=='hand'||!$('welcome').hidden||!$('cameraPanel').hidden){uiHover='';uiTime=0;return;}
- for(const id of ['reset','aboutPainting','back','continue','replayNarration','skipReplay']){const b=$(id),r=b.getBoundingClientRect(),visible=r.width>0&&r.height>0&&(journey.mode==='discovery'||journey.mode==='complete'?['continue','replayNarration'].includes(id):!['continue','replayNarration'].includes(id));if(pointer.active&&visible&&pc.x>=r.left&&pc.x<=r.right&&pc.y>=r.top&&pc.y<=r.bottom)hit=id;else b.style.background='';}
+ let hit='';const pc=pointerClient();if(pointer.source!=='hand'||!$('cameraPanel').hidden){uiHover='';uiTime=0;return;}
+ const ids=!$('welcome').hidden?['welcomeCamera']:journey.mode==='discovery'||journey.mode==='complete'?['continue','replayNarration']:['reset','aboutPainting','back','skipReplay'];
+ for(const id of ids){const b=$(id),r=b.getBoundingClientRect(),visible=!b.disabled&&r.width>0&&r.height>0;if(pointer.active&&visible&&pc.x>=r.left&&pc.x<=r.right&&pc.y>=r.top&&pc.y<=r.bottom)hit=id;else b.style.background='';}
  if(hit!==uiHover){uiHover=hit;uiTime=0;}else if(hit){uiTime+=dt;$(hit).style.background=`linear-gradient(90deg,#8a794b ${Math.min(100,uiTime/1.25*100)}%,#273224 0)`;if(uiTime>=1.25){uiTime=0;uiHover='';$(hit).click();}}
 }
 const mask=document.createElement('canvas');mask.width=160;mask.height=90;
@@ -103,13 +99,13 @@ function drawBurn(now){
  for(let y=1;y<89;y+=2)for(let x=1;x<159;x+=2){const d=Math.abs(field[y*160+x]-front);if(d<.035){ctx.fillStyle=`rgba(255,207,102,${(1-d/.035)*.62})`;ctx.beginPath();ctx.arc(x/160*W,y/90*H,2.1,0,Math.PI*2);ctx.fill();}}
  for(const p of sparks){const age=elapsed-(p.at+.2)/1.5*4.5;if(age>=0&&age<1.6){ctx.globalAlpha=(1-age/1.6)*.9;ctx.fillStyle=age<.25?'#fff4c7':'#efc46c';ctx.beginPath();ctx.arc(p.x+p.vx*age+Math.sin(age*7+p.x)*5,p.y+p.vy*age,p.size*(1-age/2),0,Math.PI*2);ctx.fill();}}
  ctx.restore();
- if(t===1){celebration=null;journey.mode='recap';recap={start:now};$('help').textContent='全彩回望 · 由城內到城外';$('travelBanner').textContent='回望古城 · 由內到外';}
+ if(t===1){celebration=null;journey.mode='recap';recap={elapsed:0};$('help').textContent='全彩回望 · 由城內到城外';$('travelBanner').textContent='回望古城 · 由內到外';}
 }
-function drawRecap(now){
- const elapsed=(now-recap.start)/1000,segment=Math.floor(elapsed/4),index=chapters.length-1-Math.min(segment,chapters.length-1);
- if(segment>=chapters.length){viewX=chapters[0].x;cacheView();recap=null;finish();ctx.drawImage(surface,0,0);return;}
- const local=elapsed%4,t=Math.max(0,Math.min(1,(local-.7)/2.6)),ease=t*t*(3-2*t),from=chapters[index].x,to=chapters[Math.max(0,index-1)].x;
- viewX=from+(to-from)*ease;cacheView();ctx.drawImage(surface,0,0);$('taskTitle').textContent=chapters[index].name;$('taskText').textContent='';$('travelBanner').textContent='回望古城 · '+chapters[index].name;
+function drawRecap(dt){
+ if(!document.hidden)recap.elapsed+=dt;
+ const frame=recapFrame(chapters,recap.elapsed);viewX=frame.x;cacheView();ctx.drawImage(surface,0,0);
+ if(frame.done){recap=null;finish();return;}
+ $('taskTitle').textContent=chapters[frame.index].name;$('taskText').textContent='';$('travelBanner').textContent='慢慢回望 · '+chapters[frame.index].name;
 }
 function vignette(){
  ctx.save();for(const [x0,y0,x1,y1,rx,ry,rw,rh]of [[0,0,120,0,0,0,120,H],[W,0,W-120,0,W-120,0,120,H],[0,0,0,65,0,0,W,65],[0,H,0,H-85,0,H-85,W,85]]){const g=ctx.createLinearGradient(x0,y0,x1,y1);g.addColorStop(0,'#070d09');g.addColorStop(.3,'#070d09d9');g.addColorStop(1,'#070d0900');ctx.fillStyle=g;ctx.fillRect(rx,ry,rw,rh);}ctx.restore();
@@ -120,16 +116,15 @@ function draw(now){
  const p=paintingPoint();ctx.clearRect(0,0,W,H);
  if(artReady){
   if(journey.mode==='burn')drawBurn(now);
-  else if(journey.mode==='recap')drawRecap(now);
+  else if(journey.mode==='recap')drawRecap(dt);
   else if(journey.mode==='transition'&&travel){const t=Math.min(1,(now-travel.start)/3200),ease=t*t*(3-2*t);viewX=travel.from+(travel.to-travel.from)*ease;cacheView();ctx.drawImage(surface,0,0);if(t===1){travel=null;journey.mode='search';$('travelBanner').hidden=true;dwell=0;searchOrigin=pointerClient();searchArmed=false;}}
-  else if(journey.mode==='explore'){if(pointer.active&&p.inside&&$('cameraPanel').hidden){const speed=p.x<.18?-1700*(1-p.x/.18):p.x>.82?1700*((p.x-.82)/.18):0;if(speed){const previousX=viewX;viewX=Math.max(0,Math.min(SCROLL_W-VIEW,viewX+speed*dt));if(viewX===previousX&&artOverflow){artPan=Math.max(0,Math.min(artOverflow,artPan+speed*dt*.45));positionPainting();}cacheView();}}ctx.drawImage(surface,0,0);}
   else if(journey.mode==='search')search(dt,p);
   else{ctx.drawImage(surface,0,0);ctx.fillStyle='#0005';ctx.fillRect(0,0,W,H);}
   vignette();
  }
- uiDwell(dt);const pc=pointerClient(),main=$('mainView').getBoundingClientRect();$('handCursor').hidden=!pointer.active||!$('welcome').hidden;$('handCursor').style.left=(pc.x-main.left)+'px';$('handCursor').style.top=(pc.y-main.top)+'px';
+ uiDwell(dt);const pc=pointerClient(),main=$('mainView').getBoundingClientRect();$('handCursor').hidden=!pointer.active;$('handCursor').style.left=(pc.x-main.left)+'px';$('handCursor').style.top=(pc.y-main.top)+'px';
  const percent=Math.round(Math.min(1,uiHover?uiTime/1.25:dwell/1.8)*100);$('dwellPercent').textContent=percent+'%';$('dwellFill').style.width=percent+'%';
  frames++;if(frames%12===0)canvas.dataset.state=JSON.stringify(getState());requestAnimationFrame(draw);
 }
-function getState(){return {mode:journey.mode,chapter:journey.chapter,chapterName:chapters[journey.chapter].name,found:journey.found.map(a=>[...a]),total:journey.found.flat().length,totalClues,replayFinished,hover,dwell,pointer:{...pointer},viewX,artPan,artOverflow,artReady,frames,targets:chapters[journey.chapter].targets.map(t=>({id:t.id,x:t.x,y:t.y,r:t.r})),reward:{ready:reward.readyState,error:reward.error?.message||null,src:reward.getAttribute('src')}};}
+function getState(){return {mode:journey.mode,chapter:journey.chapter,chapterName:chapters[journey.chapter].name,found:journey.found.map(a=>[...a]),total:journey.found.flat().length,totalClues,replayFinished,replaySeconds:chapters.length*RECAP_SEGMENT_SECONDS,uiHover,uiTime,welcome:!$('welcome').hidden,hover,dwell,pointer:{...pointer},viewX,artPan,artOverflow,artReady,frames,targets:chapters[journey.chapter].targets.map(t=>({id:t.id,x:t.x,y:t.y,r:t.r})),reward:{ready:reward.readyState,error:reward.error?.message||null,src:reward.getAttribute('src')}};}
 window.portalGame={getState,reset};reset();requestAnimationFrame(draw);

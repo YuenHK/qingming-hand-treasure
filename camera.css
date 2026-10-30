@@ -73,3 +73,9 @@ header{gap:14px;align-items:center}
 @media(max-width:750px){.welcomeCard{padding:22px}.welcomeBrand h2{font-size:27px}.welcomeEdition{display:none}.welcomeColumns{gap:20px}.welcomeColumns h3{font-size:19px}.paintingIntro p{font-size:14px;line-height:1.75}.welcomePlay{padding-left:20px}.welcomeActions button{font-size:14px}.welcomeArtwork{height:100px;margin:18px 0}}
 @media(max-width:570px){#welcome{padding:12px}.welcomeCard{max-height:calc(100dvh - 24px);padding:20px}.welcomeColumns{grid-template-columns:1fr}.welcomePlay{border-left:0;border-top:1px solid #72805a;padding:18px 0 0}.welcomeActions{flex-direction:column}.welcomeBrand h2{font-size:24px}.welcomeArtwork span{font-size:15px}}
 @media(max-height:620px) and (min-width:571px){.welcomeCard{padding:18px 26px}.welcomeBrand img{width:42px;height:42px}.welcomeBrand h2{font-size:25px}.welcomeArtwork{height:70px;margin:14px 0}.welcomeColumns h3{font-size:19px}.paintingIntro p{font-size:14px;line-height:1.65}.welcomeActions{margin:16px 0 9px}.welcomeActions button{padding:10px}.welcomeCard .welcomePlay ol{gap:8px}}
+#handCursor{z-index:60}
+#welcome{right:var(--side);padding:16px}
+.welcomeStart{position:sticky;bottom:-22px;z-index:1;background:#17291ff5;padding:10px 0 8px;margin-top:12px;border-top:1px solid #8b8354}
+.welcomeStart .welcomeActions{margin:8px 0}.welcomeGestureHint,#welcomeHandStatus{font-size:14px;line-height:1.5;color:#ebd79f;text-align:center;margin:5px 0}
+.posterPromo{border-top:1px solid #65714d;margin-top:16px;padding-top:10px}.posterPromo summary{cursor:pointer;color:#e7d29e;font-size:14px}.posterLinks{display:flex;gap:18px;flex-wrap:wrap;padding:12px 0}.posterLinks a{color:#eee1bc;font-size:14px}.posterPromo img{display:block;width:100%;height:auto;border:1px solid #8e8055}
+@media(max-width:850px){#welcome{right:0}.welcomeColumns{grid-template-columns:1fr}.welcomePlay{border-left:0;border-top:1px solid #72805a;padding:16px 0 0}}

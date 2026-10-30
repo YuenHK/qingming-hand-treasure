@@ -11,6 +11,7 @@ function status(text,state) {
   $('cameraStatus').textContent=text;diagnostics.state=state;
   $('cameraPill').textContent=text;$('cameraPill').dataset.state=state;
   $('pipelineMessage').textContent=text;
+  $('welcomeHandStatus').textContent=text;
   $('cameraPanel').dataset.diagnostics=JSON.stringify(diagnostics);
 }
 function deactivate(){window.portalInput(.5,.5,false,'hand');position=null;}
@@ -71,7 +72,7 @@ function result(data) {
   if(!point){deactivate();telemetry(null);status('舉起手掌，放入鏡頭畫面','searching');return;}
   if(!point.open){deactivate();telemetry(point);status('手掌合起：暫停 · 張開繼續','paused');return;}
   const previous=position;position=smoothPoint(position,point,lastResult?(now-lastResult)/1000:.1);lastResult=now;
-  const canControl=$('cameraPanel').hidden&&$('welcome').hidden;
+  const canControl=$('cameraPanel').hidden;
   const accepted=window.portalInput(position.x,position.y,canControl,'hand');
   telemetry({...point,...position},canControl&&accepted);if(canControl&&accepted)direction(position,previous);
   if(canControl&&!accepted){$('directionArrow').textContent='↖';$('directionText').textContent='滑鼠接手';$('controlCommand').textContent='滑鼠控制光圈';}
@@ -110,6 +111,7 @@ function stop() {
   $('liveTag').textContent='OFF';
   $('cameraStart').disabled=false;$('cameraStart').textContent='啟動鏡頭';$('cameraStop').hidden=true;
   $('cameraPlaceholder').hidden=false;$('cameraPicker').hidden=true;mode='mouse';window.portalControlMode='mouse';
+  $('welcomeCamera').disabled=false;$('welcomeCamera').textContent='開啟鏡頭，揮手入畫';
 }
 function fail(error) {
   stop();diagnostics.error=error.message;
@@ -119,6 +121,7 @@ function fail(error) {
 async function start(deviceId) {
   if(starting)return;stop();starting=true;const token=generation;mode='loading';window.portalControlMode='loading';
   $('cameraStart').disabled=true;$('cameraStart').textContent='正在啟動…';status('正在啟動鏡頭及手掌追蹤…','loading');diagnostics.error=null;
+  $('welcomeCamera').disabled=true;$('welcomeCamera').textContent='正在啟動鏡頭…';
   try {
     if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia)throw new Error('鏡頭需要 HTTPS 或本機網址，請用新版 Chrome／Edge 開啟遊戲。');
     const acquired=await navigator.mediaDevices.getUserMedia({audio:false,video:{width:{ideal:640},height:{ideal:480},frameRate:{ideal:30,max:30},...(deviceId?{deviceId:{exact:deviceId}}:{facingMode:'user'})}});
@@ -130,6 +133,7 @@ async function start(deviceId) {
     await model();
     if(token!==generation)return;
     mode='hand';window.portalControlMode='hand';lastVideoTime=-1;lastResult=0;
+    $('welcomeCamera').disabled=false;$('welcomeCamera').textContent='揮手入畫 · 停留開始';
     $('cameraStart').disabled=false;$('cameraStart').textContent='重新啟動';$('cameraStop').hidden=false;$('cameraPlaceholder').hidden=true;$('cameraPanel').hidden=true;
     const devices=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='videoinput');
     $('cameraSelect').replaceChildren(...devices.map((d,i)=>{const o=document.createElement('option');o.value=d.deviceId;o.textContent=d.label||`鏡頭 ${i+1}`;return o;}));
@@ -141,7 +145,7 @@ async function start(deviceId) {
 $('cameraStart').onclick=()=>start();
 $('cameraStop').onclick=()=>{stop();status('已關閉鏡頭 · 可用滑鼠試玩','idle');};
 $('mouseMode').onclick=()=>{$('welcome').hidden=true;$('cameraPanel').hidden=true;status('滑鼠同手勢都可操作，移動滑鼠即可接手',mode==='hand'?'tracking':'idle');};
-$('welcomeCamera').onclick=()=>{$('welcome').hidden=true;if(mode==='hand'){$('cameraPanel').hidden=true;return;}$('cameraPanel').hidden=false;start();};
+$('welcomeCamera').onclick=()=>{if(mode==='hand'){$('welcome').hidden=true;$('cameraPanel').hidden=true;return;}start();};
 $('quickCamera').onclick=()=>{$('cameraPanel').hidden=false;start();};
 $('cameraClose').onclick=()=>{$('cameraPanel').hidden=true;};
 $('cameraSelect').onchange=e=>start(e.target.value);
@@ -151,3 +155,4 @@ window.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='c'&&!e.ctrlKey&&
 document.addEventListener('visibilitychange',()=>{if(document.hidden)deactivate();});
 window.addEventListener('pagehide',stop);
 window.portalControlMode='mouse';drawHand(null);telemetry(null);status('鏡頭未啟動','idle');
+start();

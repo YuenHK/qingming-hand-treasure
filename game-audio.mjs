@@ -30,10 +30,10 @@ export function createGameAudio(){
  async function start(){
   if(started){if(context?.state==='suspended'&&!document.hidden)await context.resume();return;}
   try{
-   context=new (window.AudioContext||window.webkitAudioContext)();
+   if(!context){context=new (window.AudioContext||window.webkitAudioContext)();
    master=context.createGain();master.gain.value=.85;const limiter=context.createDynamicsCompressor();master.connect(limiter).connect(context.destination);
-   musicGain=context.createGain();musicGain.gain.value=.001;musicGain.connect(master);effectGain=context.createGain();effectGain.gain.value=.4;effectGain.connect(master);
-   await context.resume();started=true;nextBeat=context.currentTime+.05;mix();schedule();timer=setInterval(schedule,200);report('搵到物件，自動廣東話講解');
+   musicGain=context.createGain();musicGain.gain.value=.001;musicGain.connect(master);effectGain=context.createGain();effectGain.gain.value=.4;effectGain.connect(master);}
+   await context.resume();if(started)return;started=true;nextBeat=context.currentTime+.05;mix();schedule();timer=setInterval(schedule,200);report('搵到物件，自動廣東話講解');
   }catch{report('聲音未能啟動，可按「聽講解」重試');}
  }
  function stopNarration(){token++;voice.pause();voice.currentTime=0;speaking=false;mix();report(narration?'搵到物件，自動廣東話講解':'廣東話自動講解已關');}
@@ -54,6 +54,7 @@ export function createGameAudio(){
  $('narrationToggle').onclick=async()=>{await start();narration=!narration;$('narrationToggle').textContent=narration?'講解：開':'講解：關';$('narrationToggle').setAttribute('aria-pressed',String(narration));if(!narration)stopNarration();else if(!$('notice').hidden&&current)narrate(current);else report('搵到物件，自動廣東話講解');};
  $('replayNarration').onclick=async()=>{await start();if(!narration){narration=true;$('narrationToggle').textContent='講解：開';$('narrationToggle').setAttribute('aria-pressed','true');}if(current)narrate(current);};
  $('welcomeCamera').addEventListener('click',start);
+ for(const name of ['pointerdown','keydown'])document.addEventListener(name,event=>{if(event.isTrusted)start();});
  document.addEventListener('visibilitychange',()=>{if(document.hidden){stopNarration();context?.suspend();}else if(started){context.resume().then(()=>{nextBeat=context.currentTime+.05;schedule();report();}).catch(()=>report('按聲音按鈕恢復配樂'));}});
  window.addEventListener('pagehide',()=>{clearInterval(timer);voice.pause();context?.close();});
  report('搵到物件，自動廣東話講解');

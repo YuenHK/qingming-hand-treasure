@@ -4,14 +4,25 @@
 
 **[立即遊玩](https://yuenhk.github.io/qingming-hand-treasure/)** · 建議用電腦版 Chrome／Edge 配合鏡頭揮手；滑鼠只作輔助操作。
 
-![遊戲主頁](docs/homepage.jpg)
+## 宣傳海報
+
+東華三院馮黃鳳亭中學｜揮手鑑古 · 走進清明上河全圖
+
+![電視海報](assets/posters/tv-preview.png)
+
+<a href="assets/posters/rollup.pdf"><img src="assets/posters/rollup-preview.png" alt="80 × 200 cm 易拉架海報" width="240"></a>
+
+[易拉架印刷 PDF（80 × 200 cm，含 3 mm 出血）](assets/posters/rollup.pdf) · [電視 PDF](assets/posters/tv.pdf) · [Full HD 圖片](assets/posters/tv-preview.png) · [4K 圖片](assets/posters/tv-4k.png)
+
+海報由本專案設計，採用原畫市集局部、手部關鍵點及遊戲 QR code。原畫來源見下方；海報內嵌 Noto 字型，授權見 [FONTS-LICENSE.txt](assets/posters/FONTS-LICENSE.txt)。
 
 ## 點樣玩
 
-1. 先閱讀主頁嘅畫卷簡介，再按「開啟鏡頭，揮手入畫」。
+1. 開啟頁面並允許鏡頭後，介紹頁已可顯示實景與手勢。張開手掌，將光點移到「揮手入畫」，停留即可開始；亦可用滑鼠輔助。
 2. 張開手掌移動光圈；家長可隨時用滑鼠輔助，滑鼠停低約三秒後，手勢可以接返。
 3. 照住物件約兩秒，聽廣東話講解用途與畫中生活。每關搵齊兩件，五關共十件。
-4. 通關後，光粒子消融灰幕，再由城內到城外回望全彩長卷。
+4. 通關後，光粒子消融灰幕，再用約 60 秒由城內到城外慢慢回望全彩長卷；背景分頁不會跳過回放。
+5. 完成介紹後按「再玩一次」，直接重開第一關，鏡頭保持啟動。
 
 「畫卷簡介」可重新打開介紹；右欄可開關音樂與講解。操作員按 C 可開啟鏡頭設定，按 R 重新開始。
 
@@ -44,6 +55,6 @@ python scripts/build_site.py
 
 ## 部署與素材
 
-GitHub Pages 使用 `.github/workflows/pages.yml`：先跑12項測試，再校驗素材雜湊、建立 `dist/`、部署。Repository Settings → Pages 的 Source 設為 GitHub Actions。詳見[GitHub Pages 官方說明](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
+GitHub Pages 使用 `.github/workflows/pages.yml`：先跑自動測試，再校驗素材雜湊、建立 `dist/`、部署。Repository Settings → Pages 的 Source 設為 GitHub Actions。詳見[GitHub Pages 官方說明](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
 
 原畫影像來自 [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:QingMingShangHeTu_Big.jpg)，來源頁標示 Public Domain／PD-Art。原畫、套件及語音來源保留於 `assets/SOURCES.json`、`vendor/mediapipe/SOURCE.json` 及 `assets/narration/manifest.json`，MediaPipe 授權見 `vendor/mediapipe/LICENSE`。第三方素材各依原有授權；公開程式碼不代表所有素材均可任意另行授權。
